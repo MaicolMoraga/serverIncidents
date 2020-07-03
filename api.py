@@ -6,7 +6,6 @@ def _url(path):
 
 def get_mock(path):
     reply = requests.get(_url(path))
-    print(reply)
     if reply.status_code != 200:
         return {'error':1,'menssage':'status code '+reply.status_code}
     else:
