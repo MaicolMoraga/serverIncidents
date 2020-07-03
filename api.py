@@ -7,9 +7,9 @@ def _url(path):
 def get_mock(path):
     reply = requests.get(_url(path))
     if reply.status_code != 200:
-        return {'error':1,'menssage':'status code '+reply.status_code}
+        return {'error':1,'menssage':'status code '+str(reply.status_code)}
     else:
-        return reply.json()
+        return {'error':0,'json':reply.json()}
 
 def post_mock(path,json):
     return requests.post(_url(path),json)
