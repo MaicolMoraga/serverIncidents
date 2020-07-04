@@ -1,6 +1,6 @@
-ServerIncidents in Python-Flask with mockapi
+  **SERVER INCIDENTS IN PYTHON.FLASK WHITH MOCKAPI**
 
-  Rest API that allows the creation of problems on servers:
+  **Rest API that allows the creation of problems on servers**
 
     - The entry of problems by the agent is validated with basic
       outh or previously generated token.
@@ -12,7 +12,7 @@ ServerIncidents in Python-Flask with mockapi
 
     - The creation of new token sesion.
 
-  *The data is saved in mockapi.io in two resources (agent, issue), URL public Mockapi data: https://mockapi.io/clone/5ef62e652c0f2c0016949868.
+  * The data is saved in mockapi.io in two resources (agent, issue), URL public Mockapi data: https://mockapi.io/clone/5ef62e652c0f2c0016949868.
 
   **API REST possible responses**
 
@@ -70,6 +70,7 @@ ServerIncidents in Python-Flask with mockapi
     5.- docker stop CONTEINER ID (stop the api process in docker, enter the container id shown in the list above)
 
   **Helpful Links**
+  
   ● Docker:  https://www.docker.com/
   
   ● Flask:   https://flask.palletsprojects.com/en/master/
