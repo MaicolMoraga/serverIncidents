@@ -1,8 +1,7 @@
-import requests
-import json
+import requests, json
 
 def _url(path):
-    return 'https://5ef62e652c0f2c0016949867.mockapi.io/' + path
+    return 'https://5ef62e652c0f2c0016949867.mockapi.io/'+path
 
 def get_mock(path):
     reply = requests.get(_url(path))

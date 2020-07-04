@@ -1,12 +1,8 @@
-import os
-import time
-import jwt
-from flask import Flask, jsonify, request, abort, g, url_for
+import os,time,jwt,json,datetime
+from flask import Flask, jsonify, request, abort, g, url_for, session
 from api import get_mock, post_mock
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
-import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
@@ -26,6 +22,7 @@ def agent_object():
         return list_object
 
 class Agent():
+
     def get_agent(self,username):
 
         json_object = agent_object()
@@ -38,6 +35,9 @@ class Agent():
                     self.id_aux         = element['id']
                     self.username_aux   = element['userName']
                     self.password_hash  = element['password']
+                    
+                    session['username'] = self.username_aux
+
                     return True
                 else:
                     return False
@@ -51,17 +51,34 @@ class Agent():
         else:
             for element in json_object:
                 if element['userName'].strip() == username.strip():
-                    self.id  = element['id']
-                    aux = True
+                    return True
                 else:
-                    aux = False
-            return aux
+                    return False
     
     def hash_password(self,password):
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self,password):
-        return check_password_hash(self.password_hash, password)
+
+        validate = check_password_hash(self.password_hash, password)
+
+        if validate is True:
+            return True
+        else:
+            session.pop('username', None)
+            return False
+
+    def generate_issue(self,title,description):
+
+        now         = datetime.datetime.now() 
+        date_time   = now.strftime('%m-%d-%Y %H:%M:%S')
+
+        json_aux    = { 'date': date_time,
+                        'title': title,
+                        'description': description,
+                        'agent': session['username']}
+        
+        return json_aux
     
     def generate_auth_token(self, expires_in=600):
         return jwt.encode({'exp': time.time() + expires_in},app.config['SECRET_KEY'], algorithm='HS256')
@@ -77,7 +94,7 @@ class Agent():
 
 @auth.verify_password
 def verify_password(username_or_token, password):
-    agent = Agent()
+    agent    = Agent()
     response = agent.verify_auth_token(username_or_token)
 
     if response is True:
@@ -98,15 +115,27 @@ def get_auth_token():
     token = agent.generate_auth_token()
     return jsonify({ 'token': token.decode('ascii') })
 
-
 @app.route('/issues', methods=['GET'])
 def get_issues():
     return jsonify(get_mock('issue'))
 
+@app.route('/issues/<string:orden_filter>')
+def get_issue_s(orden_filter):
+
+    url_aux = 'issue?'+orden_filter
+    print(url_aux)
+    return get_mock(url_aux)
+
 @app.route('/issue', methods=['POST'])
 @auth.login_required
 def add_issue():
-    response = post_mock('issue',request.json)
+
+    agent       = Agent()
+    title       = request.json.get('title')
+    description = request.json.get('description')
+    
+    json     = agent.generate_issue(title,description)
+    response = post_mock('issue',json)
 
     if response.status_code != 201:
         return {'error':1,'menssage':'status code '+response.status_code}
@@ -135,7 +164,7 @@ def add_agent():
         if response.status_code != 201:
             return {'error':1,'menssage':'status code '+response.status_code}
         else:
-            return {'error':0,'menssage':'issue registered Successfully'}
+            return {'error':0,'menssage':'agent registered Successfully'}
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
