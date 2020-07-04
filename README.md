@@ -57,17 +57,20 @@
   - Go to the directory where the project is located.
   - In console run the following command, make sure you have desktop docker installed and running previously.
 
-    1. docker build -t serverincidents . (generates the api docker image)
+    * docker build -t serverincidents . 
+      - Generates the api docker image.
     
-    2. docker images (to validate if the image is in the docker directory)
+    * docker images 
+      - To validate if the image is in the docker directory. 
     
-    3. docker run -it --publish 7000:4000 -d  serverincidents (Run the server in the background with the api image in the 
-      port 7000)
+    * docker run -it --publish 7000:4000 -d  serverincidents
+      - Run the server in the background with the api image in the port 7000.
       
-    4. docker container ls (allows you to see the processes currently running docker, in which the process of our api 
-      will be found)
+    * docker container ls 
+      - Allows you to see the processes currently running docker, in which the process of our api will be found.
       
-    5. docker stop CONTEINER ID (stop the api process in docker, enter the container id shown in the list above)
+    * docker stop CONTEINER ID 
+      - Stop the api process in docker, enter the container id shown in the list above.
 
   **Helpful Links**
   
