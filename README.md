@@ -12,11 +12,9 @@ ServerIncidents in Python-Flask with mockapi
 
     - The creation of new token sesion.
 
-  The data is saved in mockapi.io in two resources (agent, issue).
+  *The data is saved in mockapi.io in two resources (agent, issue), URL public Mockapi data: https://mockapi.io/clone/5ef62e652c0f2c0016949868.
 
-  URL public Mockapi data: https://mockapi.io/clone/5ef62e652c0f2c0016949868
-
-  API REST possible responses:
+  **API REST possible responses**
 
   http://localhost:7000/agent
   - Allows the registration of a new agent.
@@ -53,22 +51,29 @@ ServerIncidents in Python-Flask with mockapi
 
   *For more information check the Postman Collection: https://documenter.getpostman.com/view/11862302/T17GdmpL
 
-  Implementation in a local environment with docker
+  **Implementation in a local environment with docker**
 
   - The file is included with all the steps of the docker process.
   - Go to the directory where the project is located.
   - In console run the following command, make sure you have desktop docker installed and running previously.
 
     1.- docker build -t serverincidents . (generates the api docker image)
+    
     2.- docker images (to validate if the image is in the docker directory)
+    
     3.- docker run -it --publish 7000:4000 -d  serverincidents (Run the server in the background with the api image in the 
       port 7000)
+      
     4.- docker container ls (allows you to see the processes currently running docker, in which the process of our api 
       will be found)
+      
     5.- docker stop CONTEINER ID (stop the api process in docker, enter the container id shown in the list above)
 
-  Helpful Links
+  **Helpful Links**
   ● Docker:  https://www.docker.com/
+  
   ● Flask:   https://flask.palletsprojects.com/en/master/
+  
   ● Postman: https://learning.postman.com/
+  
   ● Mockapi: https://www.mockapi.io/
