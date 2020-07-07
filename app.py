@@ -30,17 +30,19 @@ class Agent():
         if not json_object:
             return False
         else:
+
             for element in json_object:
                 if element['userName'].strip() == username.strip():
+
                     self.id_aux         = element['id']
                     self.username_aux   = element['userName']
                     self.password_hash  = element['password']
-                    
+                    session.pop('username', None)
                     session['username'] = self.username_aux
 
                     return True
-                else:
-                    return False
+
+            return False
 
     def verify_agent_exits(self,username):
         
@@ -49,16 +51,17 @@ class Agent():
         if not json_object:
             return False
         else:
+
             for element in json_object:
                 if element['userName'].strip() == username.strip():
                     return True
-                else:
-                    return False
+        
+            return False
     
     def hash_password(self,password):
         self.password_hash = generate_password_hash(password)
 
-    def verify_password(self,password):
+    def validate_password(self,password):
 
         validate = check_password_hash(self.password_hash, password)
 
@@ -102,7 +105,8 @@ def verify_password(username_or_token, password):
     else:
         response_aux = agent.get_agent(username_or_token)
         if response_aux is True:
-            if not agent or not agent.verify_password(password):
+
+            if not agent or not agent.validate_password(password):
                 return False
             return True
         else:
